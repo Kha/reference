@@ -1,0 +1,347 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Lexical Structure &mdash; The Lean Reference Manual master documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="The Lean Reference Manual master documentation" href="index.html"/>
+        <link rel="next" title="Expressions" href="expressions.html"/>
+        <link rel="prev" title="The Lean Reference Manual" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> The Lean Reference Manual
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                master
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Lexical Structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#symbols-and-commands">Symbols and Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#identifiers">Identifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#string-literals">String Literals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#char-literals">Char Literals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#numeric-literals">Numeric Literals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quoted-symbols">Quoted Symbols</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#doc-comments">Doc Comments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#field-notation">Field Notation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="expressions.html">Expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="declarations.html">Declarations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="infrastructure.html">Infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tactics.html">Tactics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="programming.html">Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries.html">Libraries</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">The Lean Reference Manual</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Lexical Structure</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/lexical_structure.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="lexical-structure">
+<h1>Lexical Structure<a class="headerlink" href="#lexical-structure" title="Permalink to this headline">¶</a></h1>
+<p>This section describes the detailed lexical structure of the Lean language. Most readers may want to skip this section on the first read.</p>
+<p>Lean input is processed into a stream of tokens by its scanner, using the UTF-8 encoding. The next token is the longest matching prefix of the remaining input.</p>
+<pre>
+<strong id="grammar-token-token">token</strong> ::=  <code class="xref docutils literal"><span class="pre">symbol</span></code> | <code class="xref docutils literal"><span class="pre">command</span></code> | <a class="reference internal" href="#grammar-token-ident"><code class="xref docutils literal"><span class="pre">ident</span></code></a> | <a class="reference internal" href="#grammar-token-string"><code class="xref docutils literal"><span class="pre">string</span></code></a> | <a class="reference internal" href="#grammar-token-char"><code class="xref docutils literal"><span class="pre">char</span></code></a> | <a class="reference internal" href="#grammar-token-numeral"><code class="xref docutils literal"><span class="pre">numeral</span></code></a> |
+           <a class="reference internal" href="#grammar-token-decimal"><code class="xref docutils literal"><span class="pre">decimal</span></code></a> | <a class="reference internal" href="#grammar-token-quoted_symbol"><code class="xref docutils literal"><span class="pre">quoted_symbol</span></code></a> | <a class="reference internal" href="#grammar-token-doc_comment"><code class="xref docutils literal"><span class="pre">doc_comment</span></code></a> | <a class="reference internal" href="#grammar-token-mod_doc_comment"><code class="xref docutils literal"><span class="pre">mod_doc_comment</span></code></a> |
+           <a class="reference internal" href="#grammar-token-field_notation"><code class="xref docutils literal"><span class="pre">field_notation</span></code></a>
+</pre>
+<p>Tokens can be separated by the whitespace characters space, tab, line feed, and carriage return, as well as comments. Single-line comments start with <code class="docutils literal"><span class="pre">--</span></code>, whereas multi-line comments are enclosed by <code class="docutils literal"><span class="pre">/-</span></code> and <code class="docutils literal"><span class="pre">-/</span></code> and can be nested.</p>
+<div class="section" id="symbols-and-commands">
+<h2>Symbols and Commands<a class="headerlink" href="#symbols-and-commands" title="Permalink to this headline">¶</a></h2>
+<p><em>(TODO: list built-in symbols and command tokens?)</em></p>
+<p>Symbols are static tokens that are used in term notations and commands. They can be both keyword-like (e.g. the <a class="reference internal" href="expressions.html#structured-proofs"><code class="xref std std-keyword docutils literal"><span class="pre">have</span></code></a> keyword) or use arbitrary Unicode characters.</p>
+<p>Command tokens are static tokens that prefix any top-level declaration or action. They are usually keyword-like, with transitory commands like <code class="xref std std-keyword docutils literal"><span class="pre">#print</span></code> prefixed by an additional <code class="docutils literal"><span class="pre">#</span></code>. The set of built-in commands is listed in the <a class="reference internal" href="declarations.html#declarations"><span class="std std-ref">Declarations</span></a> section.</p>
+<p>Users can dynamically extend the sets of both symbols (via the commands listed in <a class="reference internal" href="#quoted-symbols"><span class="std std-ref">Quoted Symbols</span></a>) and command tokens (via the <code class="xref std std-keyword docutils literal"><span class="pre">[user_command]</span></code> attribute).</p>
+</div>
+<div class="section" id="identifiers">
+<span id="id1"></span><h2>Identifiers<a class="headerlink" href="#identifiers" title="Permalink to this headline">¶</a></h2>
+<p>An <em>atomic identifier</em>, or <em>atomic name</em>, is (roughly) an alphanumeric string that does not begin with a numeral. A (hierarchical) <em>identifier</em>, or <em>name</em>, consists of one or more atomic names separated by periods.</p>
+<p>Parts of atomic names can be escaped by enclosing them in pairs of French double quotes <code class="docutils literal"><span class="pre">«»</span></code>.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://gebner.github.io/lean-web-editor/#code=foo.%C2%ABbar.baz%C2%BB%20--%20name%20parts%20%5B%22foo%22,%20%22bar.baz%22%5D" target="_blank">
+try it!</a></div><div class="highlight-lean"><div class="highlight"><pre><span class="n">foo</span><span class="bp">.«</span><span class="n">bar</span><span class="bp">.</span><span class="n">baz</span><span class="bp">»</span> <span class="c1">-- name parts [&quot;foo&quot;, &quot;bar.baz&quot;]</span>
+</pre></div>
+</div>
+</div><pre>
+<strong id="grammar-token-ident">ident             </strong> ::=  <a class="reference internal" href="#grammar-token-atomic_ident"><code class="xref docutils literal"><span class="pre">atomic_ident</span></code></a> | <a class="reference internal" href="#grammar-token-ident"><code class="xref docutils literal"><span class="pre">ident</span></code></a> &quot;.&quot; <a class="reference internal" href="#grammar-token-atomic_ident"><code class="xref docutils literal"><span class="pre">atomic_ident</span></code></a>
+<strong id="grammar-token-atomic_ident">atomic_ident      </strong> ::=  <a class="reference internal" href="#grammar-token-atomic_ident_start"><code class="xref docutils literal"><span class="pre">atomic_ident_start</span></code></a> <a class="reference internal" href="#grammar-token-atomic_ident_rest"><code class="xref docutils literal"><span class="pre">atomic_ident_rest</span></code></a>*
+<strong id="grammar-token-atomic_ident_start">atomic_ident_start</strong> ::=  <a class="reference internal" href="#grammar-token-letterlike"><code class="xref docutils literal"><span class="pre">letterlike</span></code></a> | &quot;_&quot; | <a class="reference internal" href="#grammar-token-escaped_ident_part"><code class="xref docutils literal"><span class="pre">escaped_ident_part</span></code></a>
+<strong id="grammar-token-letterlike">letterlike        </strong> ::=  [a-zA-Z] | <a class="reference internal" href="#grammar-token-greek"><code class="xref docutils literal"><span class="pre">greek</span></code></a> | <a class="reference internal" href="#grammar-token-coptic"><code class="xref docutils literal"><span class="pre">coptic</span></code></a> | <a class="reference internal" href="#grammar-token-letterlike_symbols"><code class="xref docutils literal"><span class="pre">letterlike_symbols</span></code></a>
+<strong id="grammar-token-greek">greek             </strong> ::=  &lt;[α-ωΑ-Ωἀ-῾] except for [λΠΣ]&gt;
+<strong id="grammar-token-coptic">coptic            </strong> ::=  [ϊ-ϻ]
+<strong id="grammar-token-letterlike_symbols">letterlike_symbols</strong> ::=  [℀-⅏]
+<strong id="grammar-token-escaped_ident_part">escaped_ident_part</strong> ::=  &quot;«&quot; [^«»\r\n\t]* &quot;»&quot;
+<strong id="grammar-token-atomic_ident_rest">atomic_ident_rest </strong> ::=  <a class="reference internal" href="#grammar-token-atomic_ident_start"><code class="xref docutils literal"><span class="pre">atomic_ident_start</span></code></a> | [0-9'ⁿ] | <a class="reference internal" href="#grammar-token-subscript"><code class="xref docutils literal"><span class="pre">subscript</span></code></a>
+<strong id="grammar-token-subscript">subscript         </strong> ::=  [₀-₉ₐ-ₜᵢ-ᵪ]
+</pre>
+</div>
+<div class="section" id="string-literals">
+<h2>String Literals<a class="headerlink" href="#string-literals" title="Permalink to this headline">¶</a></h2>
+<p>String literals are enclosed by double quotes (<code class="docutils literal"><span class="pre">&quot;</span></code>). They may contain line breaks, which are conserved in the string value.</p>
+<pre>
+<strong id="grammar-token-string">string       </strong> ::=  '&quot;' <a class="reference internal" href="#grammar-token-string_item"><code class="xref docutils literal"><span class="pre">string_item</span></code></a> '&quot;'
+<strong id="grammar-token-string_item">string_item  </strong> ::=  <a class="reference internal" href="#grammar-token-string_char"><code class="xref docutils literal"><span class="pre">string_char</span></code></a> | <a class="reference internal" href="#grammar-token-string_escape"><code class="xref docutils literal"><span class="pre">string_escape</span></code></a>
+<strong id="grammar-token-string_char">string_char  </strong> ::=  [^\\]
+<strong id="grammar-token-string_escape">string_escape</strong> ::=  &quot;\&quot; (&quot;\&quot; | '&quot;' | &quot;'&quot; | &quot;n&quot; | &quot;t&quot; | &quot;x&quot; <a class="reference internal" href="#grammar-token-hex_char"><code class="xref docutils literal"><span class="pre">hex_char</span></code></a> <a class="reference internal" href="#grammar-token-hex_char"><code class="xref docutils literal"><span class="pre">hex_char</span></code></a>)
+<strong id="grammar-token-hex_char">hex_char     </strong> ::=  [0-9a-fA-F]
+</pre>
+</div>
+<div class="section" id="char-literals">
+<h2>Char Literals<a class="headerlink" href="#char-literals" title="Permalink to this headline">¶</a></h2>
+<p>Char literals are enclosed by single quotes (<code class="docutils literal"><span class="pre">'</span></code>).</p>
+<pre>
+<strong id="grammar-token-char">char</strong> ::=  &quot;'&quot; <a class="reference internal" href="#grammar-token-string_item"><code class="xref docutils literal"><span class="pre">string_item</span></code></a> &quot;'&quot;
+</pre>
+</div>
+<div class="section" id="numeric-literals">
+<h2>Numeric Literals<a class="headerlink" href="#numeric-literals" title="Permalink to this headline">¶</a></h2>
+<p>Numeric literals can be specified in various bases.</p>
+<pre>
+<strong id="grammar-token-numeral">numeral  </strong> ::=  <a class="reference internal" href="#grammar-token-numeral10"><code class="xref docutils literal"><span class="pre">numeral10</span></code></a> | <a class="reference internal" href="#grammar-token-numeral2"><code class="xref docutils literal"><span class="pre">numeral2</span></code></a> | <a class="reference internal" href="#grammar-token-numeral8"><code class="xref docutils literal"><span class="pre">numeral8</span></code></a> | <a class="reference internal" href="#grammar-token-numeral16"><code class="xref docutils literal"><span class="pre">numeral16</span></code></a>
+<strong id="grammar-token-numeral10">numeral10</strong> ::=  [0-9]+
+<strong id="grammar-token-numeral2">numeral2 </strong> ::=  &quot;0&quot; [bB] [0-1]+
+<strong id="grammar-token-numeral8">numeral8 </strong> ::=  &quot;0&quot; [oO] [0-7]+
+<strong id="grammar-token-numeral16">numeral16</strong> ::=  &quot;0&quot; [xX] <a class="reference internal" href="#grammar-token-hex_char"><code class="xref docutils literal"><span class="pre">hex_char</span></code></a>+
+</pre>
+<p>Decimal literals are currently only being used for some <code class="xref std std-keyword docutils literal"><span class="pre">set_option</span></code> values.</p>
+<pre>
+<strong id="grammar-token-decimal">decimal</strong> ::=  [0-9]+ &quot;.&quot; [0-9]+
+</pre>
+</div>
+<div class="section" id="quoted-symbols">
+<span id="id2"></span><h2>Quoted Symbols<a class="headerlink" href="#quoted-symbols" title="Permalink to this headline">¶</a></h2>
+<p>In a fixed set of commands (<code class="xref std std-keyword docutils literal"><span class="pre">notation</span></code>, <code class="xref std std-keyword docutils literal"><span class="pre">local</span> <span class="pre">notation</span></code>, and <code class="xref std std-keyword docutils literal"><span class="pre">reserve</span></code>), symbols (known or unknown) can be quoted by enclosing them in backticks (<code class="docutils literal"><span class="pre">`</span></code>). Quoted symbols are used by these commands for registering new notations and symbols.</p>
+<pre>
+<strong id="grammar-token-quoted_symbol">quoted_symbol      </strong> ::=  &quot;`&quot; &quot; &quot;* <a class="reference internal" href="#grammar-token-quoted_symbol_start"><code class="xref docutils literal"><span class="pre">quoted_symbol_start</span></code></a> <a class="reference internal" href="#grammar-token-quoted_symbol_rest"><code class="xref docutils literal"><span class="pre">quoted_symbol_rest</span></code></a>* &quot; &quot;* &quot;`&quot;
+<strong id="grammar-token-quoted_symbol_start">quoted_symbol_start</strong> ::=  [^0-9&quot;\n\t `]
+<strong id="grammar-token-quoted_symbol_rest">quoted_symbol_rest </strong> ::=  [^&quot;\n\t `]
+</pre>
+<p>A quoted symbol may contain surrounding whitespace, which is customarily used for pretty printing the symbol and ignored while scanning.</p>
+<p>While backticks are not allowed in a user-defined symbol, they are used in some built-in symbols (see <span class="xref std std-ref">quoting</span>), which are accessible outside of the set of commands noted above.</p>
+</div>
+<div class="section" id="doc-comments">
+<h2>Doc Comments<a class="headerlink" href="#doc-comments" title="Permalink to this headline">¶</a></h2>
+<p>A special form of comments, doc comments are used to document modules and declarations.</p>
+<pre>
+<strong id="grammar-token-doc_comment">doc_comment    </strong> ::=  &quot;/--&quot; ([^-] | &quot;-&quot; [^/])* &quot;-/&quot;
+<strong id="grammar-token-mod_doc_comment">mod_doc_comment</strong> ::=  &quot;/-!&quot; ([^-] | &quot;-&quot; [^/])* &quot;-/&quot;
+</pre>
+</div>
+<div class="section" id="field-notation">
+<h2>Field Notation<a class="headerlink" href="#field-notation" title="Permalink to this headline">¶</a></h2>
+<p>Trailing field notation tokens are used in expressions such as <code class="docutils literal"><span class="pre">(1+1).to_string</span></code>. Note that <code class="docutils literal"><span class="pre">a.to_string</span></code> is a single <a class="reference internal" href="#identifiers"><span class="std std-ref">identifier</span></a>, but may be interpreted as a field notation expression by the parser.</p>
+<pre>
+<strong id="grammar-token-field_notation">field_notation</strong> ::=  &quot;.&quot; ([0-9]+ | <a class="reference internal" href="#grammar-token-atomic_ident"><code class="xref docutils literal"><span class="pre">atomic_ident</span></code></a>)
+</pre>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="expressions.html" class="btn btn-neutral float-right" title="Expressions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="The Lean Reference Manual" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Jeremy Avigad.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'master',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
